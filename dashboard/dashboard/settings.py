@@ -135,3 +135,5 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(BASE_DIR)
 
 AUTH_USER_MODEL = 'landing.AdvUser'
+
+LOGOUT_REDIRECT_URL = 'landing:index'

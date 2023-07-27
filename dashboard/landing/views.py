@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from django.template import TemplateDoesNotExist
 from django.template.loader import get_template
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.decorators import login_required
 
 def index(request):
@@ -17,6 +17,10 @@ def other_page(request, page):
 
 class BBLoginView(LoginView):
     template_name = 'main/login.html'
+
 @login_required
 def profile(request):
     return render(request, 'main/profile.html')
+
+class BBLogoutView(LogoutView):
+    pass

@@ -27,29 +27,31 @@
             </button>
             <div class="collapse navbar-collapse justify-content-end"
                 id="navbarNav">
-                <div class="navbar-nav">
-                    {% if user.is_authenticated %}
-                    <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle"
-                            data-bs-toggle="dropdown" href="#">Профиль</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">Мои объявления</a>
-                            <a class="dropdown-item" href="#">Изменить
-                                личные данные</a>
-                            <a class="dropdown-item" href="#">Сменить пароль</a>
-                            <hr class="dropdown-divider">
-                            <form class="px-3">
-                                {% csrf_token %}
-                                {% bootstrap_button 'Выйти' button_class='btn-danger' %}
-                            </form>
-                            <hr class="dropdown-divider">
-                            <a class="dropdown-item" href="#">Удалить</a>
+                <div class="container">
+                    <div class="navbar-nav ms-md-auto">
+                        {% if user.is_authenticated %}
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle"
+                                data-bs-toggle="dropdown" href="#">Профиль</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{% url 'landing:profile' %}">Мои объявления</a>
+                                <a class="dropdown-item" href="#">Изменить
+                                    личные данные</a>
+                                <a class="dropdown-item" href="#">Сменить пароль</a>
+                                <hr class="dropdown-divider">
+                                <form class="px-3" method="post" action="{% url 'landing:logout' %}">
+                                    {% csrf_token %}
+                                    {% bootstrap_button 'Выйти' button_class='btn-danger' %}
+                                </form>
+                                <hr class="dropdown-divider">
+                                <a class="dropdown-item" href="#">Удалить</a>
+                            </div>
                         </div>
+                        {% else %}
+                        <a class="nav-link" href="#">Регистрация</a>
+                        <a class="nav-link" href="{% url 'landing:login' %}">Вход</a>
+                        {% endif %}
                     </div>
-                    {% else %}
-                    <a class="nav-link" href="#">Регистрация</a>
-                    <a class="nav-link" href="{% url 'landing:login' %}">Вход</a>
-                    {% endif %}
                 </div>
             </div>
         </div>
