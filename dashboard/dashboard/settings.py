@@ -129,6 +129,9 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Мои настройки
+
 # Добавляем директорию проекта в sys.path
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(BASE_DIR)
+
+AUTH_USER_MODEL = 'landing.AdvUser'
