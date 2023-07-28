@@ -48,7 +48,7 @@
                             </div>
                         </div>
                         {% else %}
-                        <a class="nav-link" href="#">Регистрация</a>
+                        <a class="nav-link" href="{% url 'landing:register' %}">Регистрация</a>
                         <a class="nav-link" href="{% url 'landing:login' %}">Вход</a>
                         {% endif %}
                     </div>

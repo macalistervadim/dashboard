@@ -9,9 +9,11 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404
+from django.views.generic.edit import CreateView
+from django.views.generic.base import TemplateView
 
-from .models import AdvUser
-from .models import ProfileEditForm
+from .models import AdvUser, ProfileEditForm
+from .forms import RegisterForm
 
 def index(request):
     return render(request, 'main/index.html')
@@ -52,5 +54,14 @@ class ProfileEditView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
 class PasswordEditView(SuccessMessageMixin, LoginRequiredMixin,
                        PasswordChangeView):
     template_name = 'main/password_edit.html'
-    success_url = reverse_lazy('main:profile')
+    success_url = reverse_lazy('landing:profile')
     success_message = 'Пароль пользователя успешно изменен.'
+
+class RegisterView(CreateView):
+    model = AdvUser
+    template_name = 'main/register.html'
+    form_class = RegisterForm
+    success_url = reverse_lazy('landing:register_done')
+
+class RegisterDoneView(TemplateView):
+    template_name = 'main/register_done.html'
