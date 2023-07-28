@@ -37,7 +37,7 @@
                                 <a class="dropdown-item" href="{% url 'landing:profile' %}">Мои объявления</a>
                                 <a class="dropdown-item" href="{% url 'landing:profile_edit' %}">Изменить
                                     личные данные</a>
-                                <a class="dropdown-item" href="#">Сменить пароль</a>
+                                <a class="dropdown-item" href="{% url 'landing:password_edit' %}">Сменить пароль</a>
                                 <hr class="dropdown-divider">
                                 <form class="px-3" method="post" action="{% url 'landing:logout' %}">
                                     {% csrf_token %}

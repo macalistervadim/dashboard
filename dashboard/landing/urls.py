@@ -3,7 +3,7 @@
 from django.urls import path
 
 from .views import index, other_page, BBLoginView, profile, BBLogoutView,\
-    ProfileEditView
+    ProfileEditView, PasswordEditView
 
 app_name = 'landing'
 urlpatterns = [
@@ -17,7 +17,10 @@ urlpatterns = [
     path('accounts/profile/', profile, name='profile'),
     # Выход с профиля
     path('accounts/logout/', BBLogoutView.as_view(), name='logout'),
-    #Редактирование профиля
+    # Редактирование профиля
     path('accounts/profile/edit/', ProfileEditView.as_view(),
-         name='profile_edit')
+         name='profile_edit'),
+    # Редактирование пароля
+    path('accounts/password/edit', PasswordEditView.as_view(),
+         name='password_edit')
 ]
