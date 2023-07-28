@@ -11,9 +11,11 @@ from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.views.generic.edit import CreateView
 from django.views.generic.base import TemplateView
+from django.core.signing import BadSignature
 
 from .models import AdvUser, ProfileEditForm
 from .forms import RegisterForm
+from .utilities import signer
 
 def index(request):
     return render(request, 'main/index.html')
@@ -65,3 +67,19 @@ class RegisterView(CreateView):
 
 class RegisterDoneView(TemplateView):
     template_name = 'main/register_done.html'
+
+def user_activate(request, sign):
+    try:
+        username = signer.unsign(sign)
+    except BadSignature:
+        return render(request, 'main/activation_failed.html')
+    user = get_object_or_404(AdvUser, username=username)
+    if user.is_activated == True:
+        template = 'main/activation_done_earlier.html'
+    else:
+        template = 'main/activation_done.html'
+        user.is_active = True
+        user.is_activated = True
+        user.save()
+    return render(request, template)
+

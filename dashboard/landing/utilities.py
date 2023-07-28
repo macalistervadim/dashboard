@@ -5,7 +5,7 @@ from django.conf import settings
 signer = Signer()
 
 def send_activation_notification(user):
-    if settings.ALLOWED_HOST:
+    if settings.ALLOWED_HOSTS:
         host = 'http://' + settings.ALLOWED_HOST[0]
     else:
         host = 'http://localhost:8000'

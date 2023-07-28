@@ -3,7 +3,8 @@
 from django.urls import path
 
 from .views import index, other_page, BBLoginView, profile, BBLogoutView,\
-    ProfileEditView, PasswordEditView, RegisterView, RegisterDoneView
+    ProfileEditView, PasswordEditView, RegisterView, RegisterDoneView, \
+    user_activate
 
 app_name = 'landing'
 urlpatterns = [
@@ -27,5 +28,7 @@ urlpatterns = [
     path('accounts/register/done/', RegisterDoneView.as_view(),
          name='register_done'),
     # Регистрация пользователя
-    path('accounts/register', RegisterView.as_view(), name='register')
+    path('accounts/register', RegisterView.as_view(), name='register'),
+    # Подтверждение почты
+    path('accounts/activate/<str:sign>', user_activate, name='activate')
 ]

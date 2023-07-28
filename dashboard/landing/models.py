@@ -5,8 +5,8 @@ from django import forms
 
 class AdvUser(AbstractUser):
     """Представление модели пользователя"""
-    is_actived = models.BooleanField(default=True, db_index=True,
-                                     verbose_name='Прошел активацию')
+    is_activated = models.BooleanField(default=True, db_index=True,
+                                       verbose_name='Прошел активацию')
     send_messages = models.BooleanField(default=True,
                                         verbose_name='Оповещения')
 

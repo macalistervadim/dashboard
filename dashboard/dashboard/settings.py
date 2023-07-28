@@ -137,3 +137,5 @@ sys.path.append(BASE_DIR)
 AUTH_USER_MODEL = 'landing.AdvUser'
 
 LOGOUT_REDIRECT_URL = 'landing:index'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
