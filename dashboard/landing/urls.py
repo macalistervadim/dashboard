@@ -4,7 +4,8 @@ from django.urls import path
 
 from .views import index, other_page, BBLoginView, profile, BBLogoutView,\
     ProfileEditView, PasswordEditView, RegisterView, RegisterDoneView, \
-    user_activate
+    user_activate, ProfileDeleteView, PasswordResetView, PasswordReserDoneView, \
+    PasswordResetConfirmView, PasswordResetCompleteView
 
 app_name = 'landing'
 urlpatterns = [
@@ -30,5 +31,20 @@ urlpatterns = [
     # Регистрация пользователя
     path('accounts/register', RegisterView.as_view(), name='register'),
     # Подтверждение почты
-    path('accounts/activate/<str:sign>', user_activate, name='activate')
+    path('accounts/activate/<str:sign>', user_activate, name='activate'),
+    # Удаление профиля
+    path('accounts/profile/delete/', ProfileDeleteView.as_view(),
+         name='profile_delete'),
+    # Сброс пароля
+    path('accounts/profile/password_reset/', PasswordResetView.as_view(),
+         name='password_reset'),
+    # Подтверждение сброса пароля
+    path('accounts/profile/password_reset/done/', PasswordReserDoneView.as_view(),
+         name='pass_reset_done'),
+    # Успешный сброс пароля
+    path('accounts/profile/password_reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(),
+         name='password_reset_confirm'),
+    # Уведомление об успешном сбросе
+    path('accounts/profile/password/reset/complete/', PasswordResetCompleteView.as_view(),
+        name='pass_reset_complete')
 ]

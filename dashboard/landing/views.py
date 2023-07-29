@@ -2,16 +2,18 @@ from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from django.template import TemplateDoesNotExist
 from django.template.loader import get_template
-from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView
+from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordResetView,\
+    PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import UpdateView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, DeleteView
 from django.views.generic.base import TemplateView
 from django.core.signing import BadSignature
+from django.contrib.auth import logout
 
 from .models import AdvUser, ProfileEditForm
 from .forms import RegisterForm
@@ -83,3 +85,38 @@ def user_activate(request, sign):
         user.save()
     return render(request, template)
 
+class ProfileDeleteView(SuccessMessageMixin, LoginRequiredMixin, DeleteView):
+    model = AdvUser
+    template_name = 'main/profile_delete.html'
+    success_url = reverse_lazy('landing:index')
+    success_message = 'Пользователь удален'
+
+    def setup(self, request, *args, **kwargs):
+        self.user_id = request.user.pk
+        return super().setup(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        logout(request)
+        return super().post(request, *args, **kwargs)
+
+    def get_object(self, queryset=None):
+        if not queryset:
+            queryset = self.get_queryset()
+        return get_object_or_404(queryset, pk=self.user_id)
+
+class PasswordResetView(PasswordResetView):
+    template_name = 'main/password_reset.html'
+    success_url = reverse_lazy('landing:pass_reset_done')
+    subject_template_name = 'email/reset_subject.txt'
+    email_template_name = 'email/reset_body.txt'
+
+class PasswordReserDoneView(PasswordResetDoneView):
+    template_name = 'main/password_reset_done.html'
+
+
+class PasswordResetConfirmView(PasswordResetConfirmView):
+        template_name = 'main/password_reset_pass.html'
+        success_url = reverse_lazy('landing:pass_reset_complete')
+
+class PasswordResetCompleteView(PasswordResetCompleteView):
+    tempate_name = 'main/password_reset_complete.html'
