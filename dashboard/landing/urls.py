@@ -5,10 +5,12 @@ from django.urls import path
 from .views import index, other_page, BBLoginView, profile, BBLogoutView,\
     ProfileEditView, PasswordEditView, RegisterView, RegisterDoneView, \
     user_activate, ProfileDeleteView, PasswordResetView, PasswordReserDoneView, \
-    PasswordResetConfirmView, PasswordResetCompleteView
+    PasswordResetConfirmView, PasswordResetCompleteView, rubric_bbs
 
 app_name = 'landing'
 urlpatterns = [
+    # Рубрики
+    path('<int:pk>/', rubric_bbs, name='rubric_bbs'),
     # Вспомогательные страницы
     path('<str:page>/', other_page, name='other'),
     # Главная страница
@@ -46,5 +48,5 @@ urlpatterns = [
          name='password_reset_confirm'),
     # Уведомление об успешном сбросе
     path('accounts/profile/password/reset/complete/', PasswordResetCompleteView.as_view(),
-        name='pass_reset_complete')
+        name='pass_reset_complete'),
 ]

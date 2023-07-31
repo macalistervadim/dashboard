@@ -120,3 +120,6 @@ class PasswordResetConfirmView(PasswordResetConfirmView):
 
 class PasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'main/password_reset_complete.html'
+
+def rubric_bbs(request, pk):
+    pass

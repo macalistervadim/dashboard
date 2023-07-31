@@ -58,13 +58,14 @@
     </nav>
     <div class="row">
         <nav class="col-md-auto nav flex-column bg-light">
-            <span class="nav-link root">Недвижимость</span>
-            <a href="nav-link" href="#">Жилье</a>
-            <a href="nav-link" href="#">Склады</a>
-            <a href="nav-link" href="#">Гаражи</a>
-            <span class="nav-link root" href="#">Транспорт</span>
-            <a href="nav-link" href="#">Легковой</a>
-            <a href="nav-link" href="#">Грузовой</a>
+            {% for rubric in rubrics %}
+                {% ifchanged rubric.super_rubric.pk %}
+                <span class="nav-link root">{{ rubric.super_rubric.name }}</span>
+                {% endifchanged %}
+                <a class="nav-link" href="{% url 'landing:rubric_bbs' pk=rubric.pk %}">
+                    {{ rubric.name }}
+                </a>
+            {% endfor %}
             <a class="nav-link root" href="{% url 'landing:other' page='about' %}">
                 О сайте</a>
         </nav>
