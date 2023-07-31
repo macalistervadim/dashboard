@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django import forms
 
 from .signals import post_register
-from .models import AdvUser
+from .models import AdvUser, SuperRubric, SubRubric
 
 class RegisterForm(forms.ModelForm):
     """Форма для регистрации пользователя"""
@@ -43,3 +43,13 @@ class RegisterForm(forms.ModelForm):
         model = AdvUser
         fields = ('username', 'email', 'password1', 'password2',
                   'first_name', 'last_name', 'send_messages')
+
+class SubRubricForm(forms.ModelForm):
+    super_rubric = forms.ModelChoiceField(
+        queryset=SuperRubric.objects.all(), empty_label=None,
+        label='Надрубрики', required=True
+    )
+
+    class Meta:
+        model = SubRubric
+        fields = '__all__'
