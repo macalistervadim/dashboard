@@ -11,6 +11,11 @@ class AdvUser(AbstractUser):
     send_messages = models.BooleanField(default=True,
                                         verbose_name='Оповещения')
 
+    def delete(self, *args, **kwargs):
+        for bb in self.bb_set.all():
+            bb.delete()
+        super().delete(*args, **kwargs)
+
     class Meta(AbstractUser.Meta):
         pass
 
