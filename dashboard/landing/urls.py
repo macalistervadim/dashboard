@@ -5,10 +5,12 @@ from django.urls import path
 from .views import index, other_page, BBLoginView, profile, BBLogoutView,\
     ProfileEditView, PasswordEditView, RegisterView, RegisterDoneView, \
     user_activate, ProfileDeleteView, PasswordResetView, PasswordReserDoneView, \
-    PasswordResetConfirmView, PasswordResetCompleteView, rubric_bbs
+    PasswordResetConfirmView, PasswordResetCompleteView, rubric_bbs, bb_detail
 
 app_name = 'landing'
 urlpatterns = [
+    # Сведения о выбранном объявлении
+    path('<int:rubric_pk>/<int:pk>/', bb_detail, name='bb_detail'),
     # Рубрики
     path('<int:pk>/', rubric_bbs, name='rubric_bbs'),
     # Вспомогательные страницы

@@ -14,9 +14,11 @@ from django.views.generic.edit import CreateView, DeleteView
 from django.views.generic.base import TemplateView
 from django.core.signing import BadSignature
 from django.contrib.auth import logout
+from django.core.paginator import Paginator
+from django.db.models import Q
 
-from .models import AdvUser, ProfileEditForm
-from .forms import RegisterForm
+from .models import AdvUser, ProfileEditForm, SubRubric, Bb
+from .forms import RegisterForm, SearchForm
 from .utilities import signer
 
 def index(request):
@@ -122,4 +124,28 @@ class PasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'main/password_reset_complete.html'
 
 def rubric_bbs(request, pk):
-    pass
+    rubric = get_object_or_404(SubRubric, pk=pk)
+    bbs = Bb.objects.filter(is_active=True, rubric=pk)
+    if 'keyword' in request.GET:
+        keyword = request.GET['keyword']
+        q = Q(title__iscontains=keyword) | Q(content__iscontains=keyword)
+        bbs = bbs.filter(q)
+    else:
+        keyword = ''
+    form = SearchForm(initial={'keyword': keyword})
+    paginator = Paginator(bbs, 2)
+    if 'page' in request.GET:
+        page_num = request.GET['page']
+    else:
+        page_num = 1
+    page = paginator.get_page(page_num)
+    context = {'rubric': rubric, 'page': page, 'bbs': page.object_list,
+               'form': form}
+    return render(request, 'main/rubric_bbs.html', context)
+
+def bb_detail(request, rubric_pk, pk):
+    bb = get_object_or_404(Bb, pk=pk)
+    ais = bb.additionalimage_set.all()
+    context = {'bb': bb, 'ais': ais}
+    return render(request, 'main/bb_detail.html', context)
+
