@@ -16,9 +16,11 @@ from django.core.signing import BadSignature
 from django.contrib.auth import logout
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.contrib import messages
+from django.shortcuts import redirect
 
 from .models import AdvUser, ProfileEditForm, SubRubric, Bb
-from .forms import RegisterForm, SearchForm
+from .forms import RegisterForm, SearchForm, BbForm, AIFormSet
 from .utilities import signer
 
 def index(request):
@@ -161,3 +163,20 @@ def bb_detail(request, rubric_pk, pk):
     context = {'bb': bb, 'ais': ais}
     return render(request, 'main/bb_detail.html', context)
 
+@login_required
+def profile_bb_add(request):
+    if request.method == 'POST':
+        form = BbForm(request.POST, request.FILES)
+        if form.is_valid():
+            bb = form.save()
+            formset = AIFormSet(request.POST, request.FILES, instance=bb)
+            if formset.is_valid():
+                formset.save()
+                messages.add_message(request, messages.SUCCESS,
+                                     'Объявление добавлено')
+                return redirect('landing:index')
+    else:
+        form = BbForm(initial={'author': request.user.pk})
+        formset = AIFormSet()
+    context = {'form': form, 'formset': formset}
+    return render(request, 'main/profile_bb_add.html', context)

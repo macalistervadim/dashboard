@@ -6,10 +6,12 @@ from .views import index, other_page, BBLoginView, profile, BBLogoutView,\
     ProfileEditView, PasswordEditView, RegisterView, RegisterDoneView, \
     user_activate, ProfileDeleteView, PasswordResetView, PasswordReserDoneView, \
     PasswordResetConfirmView, PasswordResetCompleteView, rubric_bbs, bb_detail,\
-    profile_bb_detail
+    profile_bb_detail, profile_bb_add
 
 app_name = 'landing'
 urlpatterns = [
+    # Ссылка на редактирование объявления/добавление
+    path('accounts/profile/add/', profile_bb_add, name='profile_bb_add'),
     # Административная ссылка на объявление
     path('accounts/profile/<int:pk>/', profile_bb_detail,
          name='profile_bb_detail'),

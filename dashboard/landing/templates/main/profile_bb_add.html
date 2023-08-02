@@ -1,0 +1,16 @@
+{% extends 'layout/basic.html' %}
+
+{% load django_bootstrap5 %}
+
+{% block title %}Добавление объявления - Профиль пользователя{% endblock %}
+
+{% block content %}
+    <div class="container">
+    <h1 class="display-4">Добавление объявления</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% bootstrap_form form layout='horizontal' %}
+            {% bootstrap_button 'Добавить' %}
+        </form>
+    </div>
+{% endblock %}

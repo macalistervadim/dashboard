@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django import forms
 
 from .signals import post_register
-from .models import AdvUser, SuperRubric, SubRubric
+from .models import AdvUser, SuperRubric, SubRubric, Bb, AdditionalImage
 
 class RegisterForm(forms.ModelForm):
     """Форма для регистрации пользователя"""
@@ -56,3 +56,11 @@ class SubRubricForm(forms.ModelForm):
 
 class SearchForm(forms.Form):
     keyword = forms.CharField(required=False, max_length=20, label='')
+
+class BbForm(forms.ModelForm):
+    class Meta:
+        model = Bb
+        fields = '__all__'
+        widgets = {'author': forms.HiddenInput}
+
+AIFormSet = forms.inlineformset_factory(Bb, AdditionalImage, fields='__all__')

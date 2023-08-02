@@ -14,6 +14,9 @@
     <p>Здравствуйте</p>
     {% endif %}
     <h3>Ваши объявления</h3>
+    <div class="row row-cols-md-auto justify-content-end">
+        <a href="{% url 'landing:profile_bb_add' %}">Добавить объявление</a>
+    </div>
     {% if bbs %}
         <div class="vstack gap-3 my-4">
             {% for bb in bbs %}
