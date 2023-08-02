@@ -5,10 +5,14 @@ from django.urls import path
 from .views import index, other_page, BBLoginView, profile, BBLogoutView,\
     ProfileEditView, PasswordEditView, RegisterView, RegisterDoneView, \
     user_activate, ProfileDeleteView, PasswordResetView, PasswordReserDoneView, \
-    PasswordResetConfirmView, PasswordResetCompleteView, rubric_bbs, bb_detail
+    PasswordResetConfirmView, PasswordResetCompleteView, rubric_bbs, bb_detail,\
+    profile_bb_detail
 
 app_name = 'landing'
 urlpatterns = [
+    # Административная ссылка на объявление
+    path('accounts/profile/<int:pk>/', profile_bb_detail,
+         name='profile_bb_detail'),
     # Сведения о выбранном объявлении
     path('<int:rubric_pk>/<int:pk>/', bb_detail, name='bb_detail'),
     # Рубрики

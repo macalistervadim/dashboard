@@ -22,7 +22,9 @@ from .forms import RegisterForm, SearchForm
 from .utilities import signer
 
 def index(request):
-    return render(request, 'main/index.html')
+    bbs = Bb.objects.filter(is_active=True).select_related('rubric')[:10]
+    context = {'bbs': bbs}
+    return render(request, 'main/index.html', context)
 
 def other_page(request, page):
     try:
@@ -35,8 +37,17 @@ class BBLoginView(LoginView):
     template_name = 'main/login.html'
 
 @login_required
+def profile_bb_detail(request, pk):
+    bb = get_object_or_404(Bb, pk=pk, author=request.user.pk)
+    ais = bb.additionalimage_set.all()
+    context = {'bb': bb, 'ais': ais}
+    return render(request, 'main/profile_bb_detail.html', context)
+
+@login_required
 def profile(request):
-    return render(request, 'main/profile.html')
+    bbs = Bb.objects.filter(author=request.user.pk)
+    context = {'bbs': bbs}
+    return render(request, 'main/profile.html', context)
 
 class BBLogoutView(LogoutView):
     pass
