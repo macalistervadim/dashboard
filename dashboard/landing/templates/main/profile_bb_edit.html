@@ -1,0 +1,16 @@
+{% extends 'layout/basic.html' %}
+
+{% load django_bootstrap5 %}
+
+{% block title %}Правка объявления - Профиль пользователя{% endblock %}
+
+{% block content %}
+    <div class="container">
+    <h1 class="display-4">Правка объявления {{ bb.title }}</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% bootstrap_form form layout='horizontal' %}
+        {% bootstrap_button 'Исправить' button_class='btn-danger' %}
+    </form>
+    </div>
+{% endblock %}
