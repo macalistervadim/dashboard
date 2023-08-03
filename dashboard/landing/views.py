@@ -188,7 +188,7 @@ def profile_bb_edit(request, pk):
         form = BbForm(request.POST, request.FILES, instance=bb)
         if form.is_valid():
             bb = form.save()
-            formset = AIFormSet(request.POST, request.FILES, instace=bb)
+            formset = AIFormSet(request.POST, request.FILES, instance=bb)
             if formset.is_valid():
                 formset.save()
                 messages.add_message(request, messages.SUCCESS,

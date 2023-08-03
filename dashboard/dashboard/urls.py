@@ -9,6 +9,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # Маршруты приложения landing
     path('', include('landing.urls')),
+    # CAPTCHA
+    path('captcha/', include('captcha.urls'))
 ]
 
 if settings.DEBUG:

@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'landing',
     # Сторонние приложения
     'django_bootstrap5',
+    'captcha',
     # Стандартные приложения
     'django.contrib.admin',
     'django.contrib.auth',
