@@ -213,7 +213,7 @@ def profile_bb_edit(request, pk):
                 formset.save()
                 messages.add_message(request, messages.SUCCESS,
                                      'Объявление исправлено')
-                return redirect('landing:bb_detail', pk=bb.pk)
+                return redirect('landing:profile')
     else:
         form = BbForm(instance=bb)
         formset = AIFormSet(instance=bb)
