@@ -19,8 +19,8 @@ from django.db.models import Q
 from django.contrib import messages
 from django.shortcuts import redirect
 
-from .models import AdvUser, ProfileEditForm, SubRubric, Bb
-from .forms import RegisterForm, SearchForm, BbForm, AIFormSet
+from .models import AdvUser, ProfileEditForm, SubRubric, Bb, Comment
+from .forms import RegisterForm, SearchForm, BbForm, AIFormSet, UserCommentForm, GuestCommentForm
 from .utilities import signer
 
 def index(request):
@@ -42,7 +42,8 @@ class BBLoginView(LoginView):
 def profile_bb_detail(request, pk):
     bb = get_object_or_404(Bb, pk=pk, author=request.user.pk)
     ais = bb.additionalimage_set.all()
-    context = {'bb': bb, 'ais': ais}
+    comments = Comment.objects.filter(bb=pk, is_active=True)
+    context = {'bb': bb, 'ais': ais, 'comments': comments}
     return render(request, 'main/profile_bb_detail.html', context)
 
 @login_required
@@ -158,9 +159,28 @@ def rubric_bbs(request, pk):
     return render(request, 'main/rubric_bbs.html', context)
 
 def bb_detail(request, rubric_pk, pk):
-    bb = get_object_or_404(Bb, pk=pk)
+    bb = Bb.objects.get(pk=pk)
+    initial = {'bb': bb.pk}
+    if request.user.is_authenticated:
+        initial['author'] = request.user.username
+        form_class = UserCommentForm
+    else:
+        form_class = GuestCommentForm
+    form = form_class(initial=initial)
+    if request.method == 'POST':
+        c_form = form_class(request.POST)
+        if c_form.is_valid():
+            c_form.save()
+            messages.add_message(request, messages.SUCCESS,
+                                 'Комментарий добавлен')
+            return redirect(request.get_full_path_info())
+        else:
+            form = c_form
+            messages.add_message(request, messages.WARNING,
+                                 'Комментарий не добавлен')
     ais = bb.additionalimage_set.all()
-    context = {'bb': bb, 'ais': ais}
+    comments = Comment.objects.filter(bb=pk, is_active=True)
+    context = {'bb': bb, 'ais': ais, 'comments': comments, 'form': form}
     return render(request, 'main/bb_detail.html', context)
 
 @login_required
@@ -193,7 +213,7 @@ def profile_bb_edit(request, pk):
                 formset.save()
                 messages.add_message(request, messages.SUCCESS,
                                      'Объявление исправлено')
-                return redirect('landing:profile')
+                return redirect('landing:bb_detail', pk=bb.pk)
     else:
         form = BbForm(instance=bb)
         formset = AIFormSet(instance=bb)
@@ -210,3 +230,15 @@ def profile_bb_delete(request, pk):
     else:
         context = {'bb': bb}
         return render(request, 'main/profile_bb_delete.html', context)
+
+@login_required
+def comment_delete(request, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+    if request.method == 'POST':
+        bb_pk = comment.bb.pk
+        comment.delete()
+        messages.success(request, 'Комментарий успешно удален.')
+        return redirect('landing:profile_bb_detail', pk=bb_pk)
+    else:
+        context = {'comment': comment}
+        return render(request, 'main/comment_delete.html', context)

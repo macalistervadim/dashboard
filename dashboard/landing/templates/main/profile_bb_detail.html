@@ -33,4 +33,18 @@
             {% endfor %}
         </div>
     {% endif %}
+    {% if comments %}
+    <div class="vstack gap-3 mt-5">
+        {% for comment in comments %}
+        <div class="p-2 border">
+            <p class="row row-cols-md-auto justify-content-end">
+                <a href="{% url 'landing:profile_comm_del' pk=comment.pk %}" class="btn btn-danger">Удалить</a>
+            </p>
+            <h5>{{ comment.author }}</h5>
+            <p>{{ comment.content }}</p>
+            <p class="text-end fst-italic">{{ comment.created_at }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
 {% endblock %}

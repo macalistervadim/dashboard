@@ -1,9 +1,11 @@
 from django.contrib.auth import password_validation
 from django.core.exceptions import ValidationError
 from django import forms
+from captcha.fields import CaptchaField
 
 from .signals import post_register
-from .models import AdvUser, SuperRubric, SubRubric, Bb, AdditionalImage
+from .models import AdvUser, SuperRubric, SubRubric, Bb, AdditionalImage,\
+    Comment
 
 class RegisterForm(forms.ModelForm):
     """Форма для регистрации пользователя"""
@@ -64,3 +66,18 @@ class BbForm(forms.ModelForm):
         widgets = {'author': forms.HiddenInput}
 
 AIFormSet = forms.inlineformset_factory(Bb, AdditionalImage, fields='__all__')
+
+class UserCommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        exclude = ('is_active',)
+        widgets = {'bb': forms.HiddenInput}
+
+class GuestCommentForm(forms.ModelForm):
+    captcha = CaptchaField(label='Введите текст с картинки',
+                           error_messages={'invalid': 'Неправильный текст'})
+
+    class Meta:
+        model = Comment
+        exclude = ('is_active',)
+        widgets = {'bb': forms.HiddenInput}

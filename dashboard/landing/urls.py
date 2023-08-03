@@ -6,10 +6,13 @@ from .views import index, other_page, BBLoginView, profile, BBLogoutView,\
     ProfileEditView, PasswordEditView, RegisterView, RegisterDoneView, \
     user_activate, ProfileDeleteView, PasswordResetView, PasswordReserDoneView, \
     PasswordResetConfirmView, PasswordResetCompleteView, rubric_bbs, bb_detail,\
-    profile_bb_detail, profile_bb_add, profile_bb_delete, profile_bb_edit
+    profile_bb_detail, profile_bb_add, profile_bb_delete, profile_bb_edit, comment_delete
 
 app_name = 'landing'
 urlpatterns = [
+    # Удаление комментария
+    path('accounts/profile/comments/delete/<int:pk>/', comment_delete,
+         name='profile_comm_del'),
     # Удаление объявления
     path('accounts/profile/delete/<int:pk>/', profile_bb_delete,
          name='profile_bb_delete'),
