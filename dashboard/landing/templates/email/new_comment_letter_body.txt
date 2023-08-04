@@ -1,0 +1,8 @@
+{% autoescape off %}
+Уважаемый {{ comment.bb.author }}
+В вашем объявлении {{ comment.bb.title }}, был оставлен новый комментарий
+
+{{ host }}{% url 'landing:profile_bb_detail' pk=comment.bb.pk %}
+
+С уважением, администрация сайта
+{% endautoescape %}
