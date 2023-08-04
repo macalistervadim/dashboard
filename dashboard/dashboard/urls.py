@@ -10,7 +10,9 @@ urlpatterns = [
     # Маршруты приложения landing
     path('', include('landing.urls')),
     # CAPTCHA
-    path('captcha/', include('captcha.urls'))
+    path('captcha/', include('captcha.urls')),
+    # REST
+    path('api/', include('api.urls')),
 ]
 
 if settings.DEBUG:
