@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from landing.models import Bb
+from landing.models import Bb, Comment
 
 class BbSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,3 +14,8 @@ class BbDetailSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'content', 'price', 'created_at',
                   'contacts', 'image')
 
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ('bb', 'author', 'content', 'created_at')
