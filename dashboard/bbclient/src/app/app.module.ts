@@ -11,8 +11,15 @@ import { registerLocaleData } from "@angular/common";
 import locateRu from '@angular/common/locales/ru'
 import locateRuExtra from '@angular/common/locales/extra/ru'
 import { LOCALE_ID } from "@angular/core";
+import { Routes } from "@angular/router";
+import { RouterModule } from "@angular/router";
 
 registerLocaleData(LocaleRu, 'ru', locateRuExtra)
+
+const appRoutes: Routes = [
+  {path: ':pk', component: BbDetailComponent},
+  {path: '', component: BbListComponent}
+]
 
 @NgModule({
   declarations: [
@@ -21,6 +28,7 @@ registerLocaleData(LocaleRu, 'ru', locateRuExtra)
     BbDetailComponent
   ],
   imports: [
+    RouterModule.forRoot(appRoutes),
     BrowserModule,
     HttpClientModule,
     FormsModule
