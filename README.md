@@ -11,7 +11,7 @@ This application, named "Dashboard," serves as a platform for users to create an
 * **User Access Control**: Access is differentiated between users, and appropriate roles are assigned.
 * **Comments for Listings**: Users can leave comments on each listing, facilitating communication and inquiries.
 * **Additional Images**: Listing owners can add supplementary images to their listings, enhancing their visibility.
-* **Sleek and Minimalist Design**: The app features an attractive and intuitive design to provide users with a seamless experience.
+* **Sleek and Minimalist Design**: The app features an attractive and intuitive design to provide users with a seamless experience
 * **Security Measures**: The app incorporates standard Django security tools to protect against various forms of attacks, including DDoS attacks.
   
 # Getting Started
